@@ -62,7 +62,7 @@ public class FileService {
         }
     }
 
-    @Cacheable(value = "maxValue", key = "@FileRepository.getHash()")
+    @Cacheable(value = "maxValue", key = "@fileRepository.getHash()")
     public FileDTO getMaxValue() {
         Long maxValue = numbers
                 .stream()
@@ -73,7 +73,7 @@ public class FileService {
         return fileDTO;
     }
 
-    @Cacheable(value = "minValue", key = "@FileRepository.getHash()")
+    @Cacheable(value = "minValue", key = "@fileRepository.getHash()")
     public FileDTO getMinValue() {
         Long minValue = numbers
                 .stream()
@@ -84,7 +84,7 @@ public class FileService {
         return fileDTO;
     }
 
-    @Cacheable(value = "median", key = "@FileRepository.getHash()")
+    @Cacheable(value = "median", key = "@fileRepository.getHash()")
     public FileDTO getMedianValue() {
         Double medianValue;
         FileDTO fileDTO = new FileDTO();
@@ -97,7 +97,7 @@ public class FileService {
         return fileDTO;
     }
 
-    @Cacheable(value = "average", key = "@FileRepository.getHash()")
+    @Cacheable(value = "average", key = "@fileRepository.getHash()")
     public FileDTO getAverageValue() {
         Double averageValue = numbers
                 .stream()
@@ -142,7 +142,7 @@ public class FileService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(value = "ascendingSequence", key = "@FileRepository.getHash()")
+    @Cacheable(value = "ascendingSequence", key = "@fileRepository.getHash()")
     public FileDTO getMaxAscSequence() {
         FileDTO fileDTO = new FileDTO();
         List<List<Long>> maxAscSequence = getMaxSequence(true);
@@ -150,7 +150,7 @@ public class FileService {
         return fileDTO;
     }
 
-    @Cacheable(value = "descendingSequence", key = "@FileRepository.getHash()")
+    @Cacheable(value = "descendingSequence", key = "@fileRepository.getHash()")
     public FileDTO getMaxDescSequence() {
         FileDTO fileDTO = new FileDTO();
         List<List<Long>> maxDescSequence = getMaxSequence(false);
