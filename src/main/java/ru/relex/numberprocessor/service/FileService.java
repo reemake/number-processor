@@ -150,7 +150,7 @@ public class FileService {
         return fileDTO;
     }
 
-    @Cacheable(value = "DescendingSequence", key = "@FileRepository.getHash()")
+    @Cacheable(value = "descendingSequence", key = "@FileRepository.getHash()")
     public FileDTO getMaxDescSequence() {
         FileDTO fileDTO = new FileDTO();
         List<List<Long>> maxDescSequence = getMaxSequence(false);
