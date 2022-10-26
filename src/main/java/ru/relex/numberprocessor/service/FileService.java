@@ -25,33 +25,51 @@ public class FileService {
 
     public void readFile(String filepath) throws IOException {
         Path path = Paths.get(filepath);
-        Stream<Long> lineStream = Files.newBufferedReader(path).lines().mapToLong(Long::parseLong).boxed();
+        Stream<Long> lineStream = Files
+                .newBufferedReader(path)
+                .lines()
+                .mapToLong(Long::parseLong)
+                .boxed();
         numbers = lineStream.collect(toList());
     }
-    public ResponseEntity<Object> uploadFileBinary(MultipartFile file, String filepath) throws IOException {
-        File convertFile = new File(filepath + file.getOriginalFilename());
-        convertFile.createNewFile();
-        FileOutputStream fout = new FileOutputStream(convertFile);
-        fout.write(file.getBytes());
-        fout.close();
-        readFile(filepath + file.getOriginalFilename());
-        return new ResponseEntity<Object>("Файл успешно загружен и прочитан", HttpStatus.OK);
+    public ResponseEntity<Object> uploadFileBinary(MultipartFile file, String filepath) {
+        try {
+            File convertFile = new File(filepath + file.getOriginalFilename());
+            convertFile.createNewFile();
+            FileOutputStream fout = new FileOutputStream(convertFile);
+            fout.write(file.getBytes());
+            fout.close();
+            readFile(filepath + file.getOriginalFilename());
+            return new ResponseEntity<Object>("Файл успешно загружен и прочитан", HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<Object>("Ошибка при загрузке файла", HttpStatus.NOT_FOUND);
+        }
     }
 
-    public ResponseEntity<Object> uploadFileJson(String filepath) throws IOException {
-        readFile(filepath);
-        return new ResponseEntity<Object>("Файл успешно прочитан", HttpStatus.OK);
+    public ResponseEntity<Object> uploadFileJson(String filepath) {
+        try {
+            readFile(filepath);
+            return new ResponseEntity<Object>("Файл успешно прочитан", HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<Object>("Ошибка при чтении файла", HttpStatus.NOT_FOUND);
+        }
     }
 
     public FileDTO getMaxValue() {
-        Long maxValue = numbers.stream().reduce(Long::max).get();
+        Long maxValue = numbers
+                .stream()
+                .reduce(Long::max)
+                .get();
         FileDTO fileDTO = new FileDTO();
         fileDTO.setMaxValue(maxValue);
         return fileDTO;
     }
 
     public FileDTO getMinValue() {
-        Long minValue = numbers.stream().reduce(Long::min).get();
+        Long minValue = numbers
+                .stream()
+                .reduce(Long::min)
+                .get();
         FileDTO fileDTO = new FileDTO();
         fileDTO.setMaxValue(minValue);
         return fileDTO;
@@ -70,7 +88,11 @@ public class FileService {
     }
 
     public FileDTO getAverageValue() {
-        Double averageValue = numbers.stream().mapToLong(e -> e).average().getAsDouble();
+        Double averageValue = numbers
+                .stream()
+                .mapToLong(e -> e)
+                .average()
+                .getAsDouble();
         FileDTO fileDTO = new FileDTO();
         fileDTO.setAverage(averageValue);
         return fileDTO;
@@ -95,11 +117,14 @@ public class FileService {
             }
 
             seqList.add(new ArrayList<>(seq));
-
             prev = num;
         }
 
-        int maxSize = seqList.stream().mapToInt(List::size).max().getAsInt();
+        int maxSize = seqList
+                .stream()
+                .mapToInt(List::size)
+                .max()
+                .getAsInt();
 
         return seqList.stream()
                 .filter(s -> s.size() == maxSize)
@@ -143,7 +168,6 @@ public class FileService {
                 response = getMaxDescSequence();
                 break;
         }
-
         return response;
     }
 

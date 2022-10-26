@@ -2,23 +2,11 @@ package ru.relex.numberprocessor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.relex.numberprocessor.dto.FileDTO;
 import ru.relex.numberprocessor.service.FileService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/files")
@@ -28,15 +16,15 @@ public class FileController {
     private String FILE_DIRECTORY;
 
     @Autowired
-    FileService fileService;
+    private FileService fileService;
 
     @PostMapping("/uploadFileBinary")
-    public ResponseEntity<Object> uploadFileBinary(@RequestPart MultipartFile file) throws IOException {
-        return fileService.uploadFileBinary(file, FILE_DIRECTORY);
+    public ResponseEntity<Object> uploadFileBinary(@RequestPart MultipartFile file) {
+            return fileService.uploadFileBinary(file, FILE_DIRECTORY);
     }
 
     @PostMapping("/uploadFileJson")
-    public ResponseEntity<Object> uploadFileJson(@RequestBody FileDTO fileDTO) throws IOException {
+    public ResponseEntity<Object> uploadFileJson(@RequestBody FileDTO fileDTO) {
         return fileService.uploadFileJson(fileDTO.getFilepath());
     }
 
