@@ -1,10 +1,13 @@
 package ru.relex.numberprocessor.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.relex.numberprocessor.dto.FileDTO;
+import ru.relex.numberprocessor.repository.FileRepository;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,6 +26,9 @@ public class FileService {
 
     private static List<Long> numbers;
 
+    @Autowired
+    private FileRepository fileRepository;
+
     public void readFile(String filepath) throws IOException {
         Path path = Paths.get(filepath);
         Stream<Long> lineStream = Files
@@ -31,6 +37,7 @@ public class FileService {
                 .mapToLong(Long::parseLong)
                 .boxed();
         numbers = lineStream.collect(toList());
+        fileRepository.setFilepath(filepath);
     }
     public ResponseEntity<Object> uploadFileBinary(MultipartFile file, String filepath) {
         try {
@@ -55,6 +62,7 @@ public class FileService {
         }
     }
 
+    @Cacheable(value = "maxValue", key = "@FileRepository.getHash()")
     public FileDTO getMaxValue() {
         Long maxValue = numbers
                 .stream()
@@ -65,6 +73,7 @@ public class FileService {
         return fileDTO;
     }
 
+    @Cacheable(value = "minValue", key = "@FileRepository.getHash()")
     public FileDTO getMinValue() {
         Long minValue = numbers
                 .stream()
@@ -75,6 +84,7 @@ public class FileService {
         return fileDTO;
     }
 
+    @Cacheable(value = "median", key = "@FileRepository.getHash()")
     public FileDTO getMedianValue() {
         Double medianValue;
         FileDTO fileDTO = new FileDTO();
@@ -87,6 +97,7 @@ public class FileService {
         return fileDTO;
     }
 
+    @Cacheable(value = "average", key = "@FileRepository.getHash()")
     public FileDTO getAverageValue() {
         Double averageValue = numbers
                 .stream()
@@ -131,6 +142,7 @@ public class FileService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "ascendingSequence", key = "@FileRepository.getHash()")
     public FileDTO getMaxAscSequence() {
         FileDTO fileDTO = new FileDTO();
         List<List<Long>> maxAscSequence = getMaxSequence(true);
@@ -138,6 +150,7 @@ public class FileService {
         return fileDTO;
     }
 
+    @Cacheable(value = "DescendingSequence", key = "@FileRepository.getHash()")
     public FileDTO getMaxDescSequence() {
         FileDTO fileDTO = new FileDTO();
         List<List<Long>> maxDescSequence = getMaxSequence(false);
