@@ -71,7 +71,7 @@ public class FileService {
                 .reduce(Long::min)
                 .get();
         FileDTO fileDTO = new FileDTO();
-        fileDTO.setMaxValue(minValue);
+        fileDTO.setMinValue(minValue);
         return fileDTO;
     }
 
@@ -141,7 +141,7 @@ public class FileService {
     public FileDTO getMaxDescSequence() {
         FileDTO fileDTO = new FileDTO();
         List<List<Long>> maxDescSequence = getMaxSequence(false);
-        fileDTO.setAscendingSequence(maxDescSequence);
+        fileDTO.setDescendingSequence(maxDescSequence);
         return fileDTO;
     }
 
