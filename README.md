@@ -65,9 +65,9 @@ Response:
 - Получение медианы (через URL запрос):  
   
 Request:  
-![image](https://user-images.githubusercontent.com/90447198/198013189-9098cccc-fd9b-4aa0-a92c-f9ad565d2596.png)  
+![image](https://user-images.githubusercontent.com/90447198/199354857-51aa310d-e43c-478e-9ee9-89a8ae35720e.png)  
 Response:  
-![image](https://user-images.githubusercontent.com/90447198/198013268-828e3527-70f1-44d7-8071-743b379e1872.png)  
+![image](https://user-images.githubusercontent.com/90447198/199354929-dd44250e-dc26-4b5c-b06d-aff74543196b.png)   
   
   
 - Получение среднего арифметического (через параметр в JSON):  
